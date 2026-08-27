@@ -1,0 +1,75 @@
+% apps lab vacuum cannon model 1 
+clear;
+clc;
+Ball_dia=.04; %m
+Mass=.00275;%kg
+Pipe_OD=.04826; %m
+Pipe_ID=.040386; %m
+Tube_Length=1.524; %m
+P_initial=8000;
+
+Patm=100000; %kpa
+starting_temp=27; %C
+
+Ball_pos=Ball_dia/2;
+A_ball=pi*(Ball_dia/2)^2;
+Burst_pressure=200000;
+Pdns=[0];
+dt=.0001; %sec 
+n=1;
+V = [0];
+t = [0];
+i=1;
+while Ball_pos<Tube_Length 
+
+   Pdns(n)=Pdns_Calc(Ball_dia,Pipe_ID,Tube_Length,Ball_pos(n),P_initial);
+   Pups(n)=Pups_Calc(Patm,n);
+   if Pdns(n) >= Burst_pressure
+     Pdns(n) = Patm;
+     if i==1
+        disp("burst")
+         disp(t)
+         i=0;
+     end
+     
+   end
+       
+   Fups(n)=Pups(n)*A_ball;
+   Fdns(n)=Pdns(n)*A_ball;
+   accel(n)=(Fups(n)-Fdns(n))/Mass;
+   V(n+1) = V(n)+ accel(n)*dt;
+   Ball_pos(n+1) = Ball_pos(n)+ V(n)*dt;
+   t(n+1) = t(n)+ dt;
+   n=n+1;
+
+end
+
+disp(V(n));
+figure(1)
+plot(t,V);
+title("Plot of ball velocity vs time ")
+xlabel("time (s)")
+ylabel("Velocity (m/s)")
+figure(2)
+plot(t,Ball_pos);
+title("Plot of ball position vs time ")
+xlabel("time (s)")
+ylabel("postion (m)")
+
+
+function P_current = Pdns_Calc(Ball_dia,Pipe_ID,Tube_Length,Ball_pos,P_initial)
+  hemisphere=2/3*pi*(Ball_dia/2)^3;
+  vol_initial=pi*(Pipe_ID/2)^2*(Tube_Length-(Ball_dia/2))-hemisphere;
+  vol_current=abs(pi*(Pipe_ID/2)^2*(Tube_Length-Ball_pos)-hemisphere);
+  k=1.4;
+  P_current=P_initial*(vol_initial/vol_current)^k;
+end 
+
+
+function pups = Pups_Calc(Patm,n)
+  pups = Patm;
+end
+
+
+
+
