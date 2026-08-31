@@ -39,17 +39,6 @@ for k=1:80
     Pdns(n)=Pdns_Calc(Ball_dia,Pipe_ID,Tube_Length,Ball_pos(n),P_initial(k));
     Pups(n)=Pups_Calc(Patm,air_density,V(n),Ball_pos(n),Pipe_ID);
 
-    % if statment for reseting the downstream pressure when it burts, not the most elegent solution but it works
-    if Pdns(n) >= Burst_pressure
-      Pdns(n) = Patm;
-      % was used for debugging, keeping it in just in case we need to debug more later
-      if i==1
-        % disp("burst")
-        % disp(t(n))
-        i=0;
-      end
-
-    end
     % calculate forces and acceleration
     Fups(n)=Pups(n)*A_ball;
     Fdns(n)=Pdns(n)*A_ball;
@@ -95,13 +84,19 @@ disp("")
 
 
 %calculate downstream pressure
-function P_current = Pdns_Calc(Ball_dia,Pipe_ID,Tube_Length,Ball_pos,P_initial)
-hemisphere=2/3*pi*(Ball_dia/2)^3;
-vol_initial=pi*(Pipe_ID/2)^2*(Tube_Length-(Ball_dia/2))-hemisphere;
-vol_current=abs(pi*(Pipe_ID/2)^2*(Tube_Length-Ball_pos)-hemisphere);
-% use thermo equation for calculating pressure, k is ratio for specific heats at about room temp
+function P_current = Pdns_Calc(Ball_dia,Pipe_ID,Tube_Length,Ball_pos,P_initial,TR)
+% if statment for reseting the downstream pressure when it burts, not the most elegent solution but it works
 k=1.4;
-P_current=P_initial*(vol_initial/vol_current)^k;
+if  TR==0
+  hemisphere=2/3*pi*(Ball_dia/2)^3;
+  vol_initial=pi*(Pipe_ID/2)^2*(Tube_Length-(Ball_dia/2))-hemisphere;
+  vol_current=abs(pi*(Pipe_ID/2)^2*(Tube_Length-Ball_pos)-hemisphere);
+  % use adiabatic equation for calculating pressure, k is ratio for specific heats at about room temp
+  P_current=P_initial*(vol_initial/vol_current)^k;
+else
+  P_current(n) = Patm;
+  TR=1
+end
 end
 
 
