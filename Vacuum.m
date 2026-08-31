@@ -5,7 +5,7 @@ clc;
 %the initial pressure  for loop is a last minute addition and a little messy 
 final_V=[0]; %m/s
 P_initial = [0]; %pa
-for k=1:60 
+for k=1:80 
   P_initial(k) = 2000+k*100;
 
 % initial paramaters 
@@ -62,11 +62,15 @@ i=1;
   end
   
   %final velocity
-  %
-  disp(V(n))
-  final_V(k)=V(n)
+  final_V(k)=V(n);
   
 end 
+
+disp("velocity for 2000 pa")
+disp(final_V(1))
+disp("velocity for 10000 pa")
+disp(final_V(k))
+
   %figures
   figure(1)
   plot(t,V);
