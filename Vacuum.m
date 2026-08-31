@@ -1,9 +1,12 @@
 % apps lab vacuum cannon model 1
 clear;
 clc;
-P_initial = [0];
-for k=1:24 
-  P_initial(k) = 2000+k*25;
+
+%the initial pressure  for loop is a last minute addition and a little messy 
+final_V=[0]; %m/s
+P_initial = [0]; %pa
+for k=1:60 
+  P_initial(k) = 2000+k*100;
 
 % initial paramaters 
 Ball_dia=.04; %m
@@ -27,7 +30,6 @@ n=1;
 V = [0];
 t = [0];
 i=1;
-k=1;
   % stop loop when ball exits the tube
   while Ball_pos<Tube_Length
   
@@ -63,7 +65,6 @@ k=1;
   %
   disp(V(n))
   final_V(k)=V(n)
- 
   
 end 
   %figures
