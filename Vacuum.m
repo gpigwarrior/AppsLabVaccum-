@@ -1,6 +1,7 @@
 % apps lab vacuum cannon model 1
 clear;
 clc;
+clear;
 
 %the initial pressure  for loop is a last minute addition and a little messy
 final_V=[0]; %m/s
