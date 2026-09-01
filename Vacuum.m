@@ -1,7 +1,6 @@
 % apps lab vacuum cannon model 1
 clear;
 clc;
-clear;
 
 %the initial pressure  for loop is a last minute addition and a little messy
 final_V=[0]; %m/s
@@ -106,7 +105,7 @@ P_current=P_initial*(vol_initial/vol_current)^k;
 end
 
 
-function pups = Pups_Calc(Patm,air_density,Velocity,length,pipe_ID)
+function pups = Pups_Calc(Patm,air_density,Velocity,length,pipe_ID,friction_factor)
 % Gas_constant=287.058
 % air_density=P_dns/(Gas_constant*)
 friction_factor=0.02;
