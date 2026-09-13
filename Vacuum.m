@@ -12,6 +12,7 @@ Pipe_OD=.04826; %m
 Pipe_ID=[.040386,0.039878,.04826]; %m
 Tube_Length=[1.524,1.4986,1.5494]; %m
 P_initial=[6000,2000,10000];
+% P_initial=0:.1:10
 air_density=1.2; %kg/m^3
 
 P_atm=100000; %pa
@@ -21,32 +22,52 @@ Burst_pressure=[250000,200000,300000]; %pa
 dt=.001; %sec
 
 
-for k = [2,3]
-  V_Delta(k,1)=simulation(Ball_dia(k), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
-end
-delta(1)=V_Delta(3,1)-V_Delta(2,1);
-for k = [2,3]
-  V_Delta(k,2)=simulation(Ball_dia(1), Mass(k), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
-end
-delta(2)=V_Delta(3,2)-V_Delta(2,2);
-for k = [2,3]
-  V_Delta(k,3)=simulation(Ball_dia(1), Mass(1), Pipe_ID(k), Tube_Length(1), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
-end
-delta(3)=V_Delta(3,3)-V_Delta(2,3);
-for k = [2,3]
-  V_Delta(k,4)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(k), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
-end
-delta(4)=V_Delta(3,4)-V_Delta(2,4);
-for k = [2,3]
-  V_Delta(k,5)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(k), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
-end
-delta(5)=V_Delta(3,5)-V_Delta(2,5);
-for k = [2,3]
-  V_Delta(k,6)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(k), air_density, P_atm, starting_temp, Pipe_OD,dt );
-end
-delta(6)=V_Delta(3,6)-V_Delta(2,6);
+i=1
+for P_initial=0:.1:10
 
-delta_final=sqrt(delta(1)^2 + delta(2)^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 +delta(6)^2 )
+  v_nominal(i)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  for k = [2,3]
+    V_Delta(k,1)=simulation(Ball_dia(k), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  end
+  delta(1)=V_Delta(3,1)-V_Delta(2,1);
+  for k = [2,3]
+    V_Delta(k,2)=simulation(Ball_dia(1), Mass(k), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  end
+  delta(2)=V_Delta(3,2)-V_Delta(2,2);
+  for k = [2,3]
+    V_Delta(k,3)=simulation(Ball_dia(1), Mass(1), Pipe_ID(k), Tube_Length(1), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  end
+  delta(3)=V_Delta(3,3)-V_Delta(2,3);
+  for k = [2,3]
+    V_Delta(k,4)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(k), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  end
+  delta(4)=V_Delta(3,4)-V_Delta(2,4);
+  for k = [2,3]
+    V_Delta(k,5)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(k), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  end
+  delta(5)=V_Delta(3,5)-V_Delta(2,5);
+  for k = [2,3]
+    V_Delta(k,6)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(1), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  end
+  delta(6)=V_Delta(3,6)-V_Delta(2,6);
+
+  delta_final(i)=sqrt(delta(1)^2 + delta(2)^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 +delta(6)^2 )
+  i=i+1;
+
+end
+% lower_bound=0
+% upper_bound=0
+% for i=1:length(delta)
+%   if delta(i)<=0
+%     lower_bound=delta(i)+lower_bound
+%   end
+%   if delta(i) > 0
+%     upper_bound=delta(i)+upper_bound
+%   end
+% end
+% thing=0.6301+  (-52.2682)+    (0.2805)+  (-45.1370)+  (-81.0014)+ (-102.1720)
+
+disp("end")
 
 
 
