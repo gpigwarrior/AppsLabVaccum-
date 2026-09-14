@@ -5,28 +5,32 @@ clc;
 %the initial pressure  for loop is a last minute addition and a little messy
 
 % initial paramaters
-P_initial=1000:100:10000;
-errors(P_initial,1)
-P_initial=7360:20:7380;
-errors(P_initial,2)
-function errors(P_initial,u)
+% range of starting values for vaccum pressure
+P_initial=1000:200:10000;
+
+%paramaters that are to be varied, first value is nominal, second is min and third is max
 Ball_dia=[.04,0.0399,0.0401]; %m
 Mass=[0.00275,.00270,0.0028];%kg
 Pipe_OD=.04826; %m
 Pipe_ID=[.040386,0.039878,.04826]; %m
 Tube_Length=[1.524,1.4986,1.5494]; %m
-% P_initial=[6000,2000,10000];
-air_density=1.2; %kg/m^3
+Burst_pressure=[250000,200000,300000]; %pa
 
+% other parameters
+air_density=1.2; %kg/m^3
 P_atm=100000; %pa
 starting_temp=300; %K
-
-Burst_pressure=[250000,200000,300000]; %pa
 dt=.000001; %sec
+
+%run simulation for various values of p_initial
 for i=1:length(P_initial)
 
+  %calculate nominal
   v_nominal(i)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
 
+  %this can be done a better way but a this is a bunch of loops that
+  %will calculate the different velocities for the upper and lower
+  %values of the various parameters
   for k = [2,3]
     V_Delta(k,1)=simulation(Ball_dia(k), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
   end
@@ -52,12 +56,14 @@ for i=1:length(P_initial)
   % end
   % delta(6)=V_Delta(3,6)-V_Delta(2,6);
 
+  %RSS for deltas
   delta_final(i)=sqrt(delta(1)^2 + delta(2)^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 );
   v_upper(i)=v_nominal(i)+delta_final(i);
   v_lower(i)=v_nominal(i)-delta_final(i);
 
 end
-figure(u)
+
+%plot results
 plot(P_initial,v_nominal)
 hold on
 plot(P_initial,v_upper)
@@ -66,12 +72,9 @@ hold off
 title("Exit velocities for differing vaccum pressures")
 xlabel("Vaccum Pressure (pa)")
 ylabel("Velocity (m/s)")
+legend('Nominal velocity','Upper bound','Lower bound')
 
 disp("end")
-
-end
-
-
 
 
 function final_V = simulation(Ball_dia, Mass, Pipe_ID, Tube_Length, Burst_pressure, P_initial, air_density, P_atm, starting_temp, Pipe_OD,dt)
