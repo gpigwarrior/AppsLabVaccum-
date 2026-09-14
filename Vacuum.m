@@ -6,7 +6,7 @@ clc;
 
 
 % initial paramaters
-P_initial=1000:5:10000;
+P_initial=1000:100:10000;
 errors(P_initial,1)
 P_initial=7360:20:7380;
 errors(P_initial,2)
@@ -23,7 +23,7 @@ P_atm=100000; %pa
 starting_temp=300; %K
 
 Burst_pressure=[250000,200000,300000]; %pa
-dt=.001; %sec
+dt=.000005; %sec
 for i=1:length(P_initial)
 
   v_nominal(i)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
