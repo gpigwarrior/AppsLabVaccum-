@@ -4,7 +4,6 @@ clc;
 
 %the initial pressure  for loop is a last minute addition and a little messy
 
-% test
 % initial paramaters
 P_initial=1000:100:10000;
 errors(P_initial,1)
@@ -23,7 +22,7 @@ P_atm=100000; %pa
 starting_temp=300; %K
 
 Burst_pressure=[250000,200000,300000]; %pa
-dt=.000005; %sec
+dt=.000001; %sec
 for i=1:length(P_initial)
 
   v_nominal(i)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
@@ -64,9 +63,9 @@ hold on
 plot(P_initial,v_upper)
 plot(P_initial,v_lower)
 hold off
-% title("Plot of ball velocity vs time ")
-% xlabel("time (s)")
-% ylabel("Velocity (m/s)")
+title("Exit velocities for differing vaccum pressures")
+xlabel("Vaccum Pressure (pa)")
+ylabel("Velocity (m/s)")
 
 disp("end")
 
