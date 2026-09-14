@@ -6,8 +6,8 @@ clc;
 
 
 % initial paramaters
-P_initial=1000:5:10000;
-errors(P_initial,1)
+% P_initial=1000:5:10000;
+% errors(P_initial,1)
 P_initial=7360:20:7380;
 errors(P_initial,2)
 function errors(P_initial,u)
@@ -23,47 +23,47 @@ P_atm=100000; %pa
 starting_temp=300; %K
 
 Burst_pressure=[250000,200000,300000]; %pa
-dt=.001; %sec
+dt=.0001; %sec
 for i=1:length(P_initial)
 
   v_nominal(i)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
 
-  for k = [2,3]
-    V_Delta(k,1)=simulation(Ball_dia(k), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
-  end
-  delta(1)=V_Delta(3,1)-V_Delta(2,1);
-  for k = [2,3]
-    V_Delta(k,2)=simulation(Ball_dia(1), Mass(k), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
-  end
-  delta(2)=V_Delta(3,2)-V_Delta(2,2);
-  for k = [2,3]
-    V_Delta(k,3)=simulation(Ball_dia(1), Mass(1), Pipe_ID(k), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
-  end
-  delta(3)=V_Delta(3,3)-V_Delta(2,3);
-  for k = [2,3]
-    V_Delta(k,4)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(k), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
-  end
-  delta(4)=V_Delta(3,4)-V_Delta(2,4);
-  for k = [2,3]
-    V_Delta(k,5)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(k), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
-  end
-  delta(5)=V_Delta(3,5)-V_Delta(2,5);
+  % for k = [2,3]
+  %   V_Delta(k,1)=simulation(Ball_dia(k), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  % end
+  % delta(1)=V_Delta(3,1)-V_Delta(2,1);
+  % for k = [2,3]
+  %   V_Delta(k,2)=simulation(Ball_dia(1), Mass(k), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  % end
+  % delta(2)=V_Delta(3,2)-V_Delta(2,2);
+  % for k = [2,3]
+  %   V_Delta(k,3)=simulation(Ball_dia(1), Mass(1), Pipe_ID(k), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  % end
+  % delta(3)=V_Delta(3,3)-V_Delta(2,3);
+  % for k = [2,3]
+  %   V_Delta(k,4)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(k), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  % end
+  % delta(4)=V_Delta(3,4)-V_Delta(2,4);
+  % for k = [2,3]
+  %   V_Delta(k,5)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(k), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  % end
+  % delta(5)=V_Delta(3,5)-V_Delta(2,5);
   % for k = [2,3]
   %   V_Delta(k,6)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
   % end
   % delta(6)=V_Delta(3,6)-V_Delta(2,6);
 
-  delta_final(i)=sqrt(delta(1)^2 + delta(2)^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 );
-  v_upper(i)=v_nominal(i)+delta_final(i);
-  v_lower(i)=v_nominal(i)-delta_final(i);
+  % delta_final(i)=sqrt(delta(1)^2 + delta(2)^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 );
+  % v_upper(i)=v_nominal(i)+delta_final(i);
+  % v_lower(i)=v_nominal(i)-delta_final(i);
 
 end
-figure(u)
-plot(P_initial,v_nominal)
-hold on
-plot(P_initial,v_upper)
-plot(P_initial,v_lower)
-hold off
+% figure(u)
+% plot(P_initial,v_nominal)
+% hold on
+% plot(P_initial,v_upper)
+% plot(P_initial,v_lower)
+% hold off
 % title("Plot of ball velocity vs time ")
 % xlabel("time (s)")
 % ylabel("Velocity (m/s)")
@@ -115,16 +115,16 @@ final_V=V(n);
 % disp(final_V)
 
 %figures
-% figure(1)
-% plot(t,V);
-% title("Plot of ball velocity vs time ")
-% xlabel("time (s)")
-% ylabel("Velocity (m/s)")
-% figure(2)
-% plot(t,Ball_pos);
-% title("Plot of ball position vs time ")
-% xlabel("time (s)")
-% ylabel("postion (m)")
+figure(1)
+plot(t,V);
+title("Plot of ball velocity vs time ")
+xlabel("time (s)")
+ylabel("Velocity (m/s)")
+figure(2)
+plot(t,Ball_pos);
+title("Plot of ball position vs time ")
+xlabel("time (s)")
+ylabel("postion (m)")
 %
 % figure(3)
 % plot(P_initial,final_V);
