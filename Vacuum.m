@@ -6,13 +6,17 @@ clc;
 
 
 % initial paramaters
+P_initial=0:5:10000;
+errors(P_initial,1)
+P_initial=1455:.01:1465;
+errors(P_initial,2)
+function errors(P_initial,u)
 Ball_dia=[.04,0.0399,0.0401]; %m
 Mass=[0.00275,.00270,0.0028];%kg
 Pipe_OD=.04826; %m
 Pipe_ID=[.040386,0.039878,.04826]; %m
 Tube_Length=[1.524,1.4986,1.5494]; %m
 % P_initial=[6000,2000,10000];
-P_initial=0:5:10000;
 air_density=1.2; %kg/m^3
 
 P_atm=100000; %pa
@@ -20,7 +24,6 @@ starting_temp=300; %K
 
 Burst_pressure=[250000,200000,300000]; %pa
 dt=.001; %sec
-
 for i=1:length(P_initial)
 
   v_nominal(i)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
@@ -55,17 +58,19 @@ for i=1:length(P_initial)
   v_lower(i)=v_nominal(i)-delta_final(i);
 
 end
+figure(u)
 plot(P_initial,v_nominal)
 hold on
 plot(P_initial,v_upper)
 plot(P_initial,v_lower)
+hold off
 % title("Plot of ball velocity vs time ")
 % xlabel("time (s)")
 % ylabel("Velocity (m/s)")
 
 disp("end")
 
-
+end
 
 
 
