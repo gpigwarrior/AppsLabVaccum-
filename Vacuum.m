@@ -6,9 +6,9 @@ clc;
 
 
 % initial paramaters
-P_initial=0:5:10000;
+P_initial=1000:5:10000;
 errors(P_initial,1)
-P_initial=1455:.01:1465;
+P_initial=7360:20:7380;
 errors(P_initial,2)
 function errors(P_initial,u)
 Ball_dia=[.04,0.0399,0.0401]; %m
