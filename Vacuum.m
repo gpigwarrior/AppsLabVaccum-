@@ -1,4 +1,4 @@
-% apps lab vacuum cannon model 1
+% apps lab vacuum cannon model 2
 clear;
 clc;
 
@@ -6,7 +6,7 @@ clc;
 
 % initial paramaters
 % range of starting values for vaccum pressure
-P_initial=1000:200:10000;
+P_initial=1000:200:12000;
 
 %paramaters that are to be varied, first value is nominal, second is min and third is max
 Ball_dia=[.04,0.0399,0.0401]; %m
@@ -51,6 +51,8 @@ for i=1:length(P_initial)
     V_Delta(k,5)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(k), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
   end
   delta(5)=V_Delta(3,5)-V_Delta(2,5);
+
+
   % for k = [2,3]
   %   V_Delta(k,6)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
   % end
@@ -64,6 +66,7 @@ for i=1:length(P_initial)
 end
 
 %plot results
+figure(1)
 plot(P_initial,v_nominal)
 hold on
 plot(P_initial,v_upper)
@@ -73,6 +76,11 @@ title("Exit velocities for differing vaccum pressures")
 xlabel("Vaccum Pressure (pa)")
 ylabel("Velocity (m/s)")
 legend('Nominal velocity','Upper bound','Lower bound')
+fontsize("increase")
+figure(2)
+params=["Ball diamater", "Ball mass", "Pipe diamater" , 'Tube length', "Burst pressure"];
+bar(params,abs(delta))
+ylabel("Affect on exit velocity (m/s)")
 
 disp("end")
 
@@ -110,30 +118,6 @@ end
 final_V=V(n);
 %final velocity
 
-
-% disp("velocity for 2000 pa")
-% disp(final_V(1));
-% disp("velocity for 10000 pa")
-% disp(final_V)
-
-%figures
-% figure(1)
-% plot(t,V);
-% title("Plot of ball velocity vs time ")
-% xlabel("time (s)")
-% ylabel("Velocity (m/s)")
-% figure(2)
-% plot(t,Ball_pos);
-% title("Plot of ball position vs time ")
-% xlabel("time (s)")
-% ylabel("postion (m)")
-%
-% figure(3)
-% plot(P_initial,final_V);
-% title("Final velocity depending on initial downstream pressure")
-% xlabel("initial pressure (pa)")
-% ylabel("Final velocity (m/s)")
-% disp("")
 
 end
 
