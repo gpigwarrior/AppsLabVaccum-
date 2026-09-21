@@ -10,7 +10,7 @@ r_l=0.2032;
 g=9.81;
 
 % Open CSV and read third column into array, then find its maximum
-filename = 'run2.csv';
+filename = 'run3.csv';
 Table = readtable(filename);
 angles = Table{:,3};
 pressures = Table{:,2};
