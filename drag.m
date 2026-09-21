@@ -6,9 +6,9 @@ clc
 
 rho=1.22;
 A=pi*0.0399/2;
-cd=0.47;
+cd=0.12;
 v_0=200;
-distance=.22;
+distance=.5;
 v=v_0;
 mass=0.027;
 dt=0.000001;
