@@ -6,7 +6,7 @@ clc;
 
 % initial paramaters
 % range of starting values for vaccum pressure
-P_initial=1000:500:12000;
+P_initial=2000:500:12000;
 
 %paramaters that are to be varied, first value is nominal, second is min and third is max
 Ball_dia=[.04,0.0399,0.0401]; %m
@@ -66,9 +66,11 @@ for i=1:length(P_initial)
 end
 
 %plot results
-figure(1)
-plot(P_initial,v_nominal)
+points=Balls;
+
+figure(4)
 hold on
+plot(P_initial,v_nominal)
 plot(P_initial,v_upper)
 plot(P_initial,v_lower)
 
@@ -76,7 +78,22 @@ title("Exit velocities for differing vaccum pressures")
 xlabel("Vaccum Pressure (pa)")
 ylabel("Velocity (m/s)")
 fontsize("increase")
-points=Balls;
+plot(points(:,1),points(:,2),'x','linewidth',7)
+% plot([4.26*10^3,4.18*10^3],[244.8,201.1],'x','linewidth',7)
+legend('Nominal velocity','Upper bound','Lower bound','Mesured data')
+
+hold off
+
+figure(5)
+hold on
+plot(P_initial,v_nominal)
+plot(P_initial,v_upper)
+plot(P_initial,v_lower)
+
+title("Exit velocities for differing vaccum pressures")
+xlabel("Vaccum Pressure (pa)")
+ylabel("Velocity (m/s)")
+fontsize("increase")
 plot(points(:,1),points(:,2),'x','linewidth',7)
 % plot([4.26*10^3,4.18*10^3],[244.8,201.1],'x','linewidth',7)
 legend('Nominal velocity','Upper bound','Lower bound','Mesured data')
@@ -138,7 +155,6 @@ vol_current=abs(pi*(Pipe_ID/2)^2*(Tube_Length-Ball_pos)-hemisphere);
 % use adiabatic equation for calculating pressure, k is ratio for specific heats at about room tem
 P_current=P_initial*(vol_initial/vol_current)^k;
 if P_current>Burst_pressure
-
   P_current = Patm;
 end
 end

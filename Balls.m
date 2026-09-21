@@ -10,7 +10,11 @@ r_l=0.2032;
 g=9.81;
 
 % Open CSV and read third column into array, then find its maximum
+Folder="raw_data\"
+
 files=dir("raw_data\");
+files(2)=[]
+files(1)=[]
 for i = 1:length(files)
 
   % loop through the files and open. Note that dir also lists the directories, so you have to check for them.
@@ -20,16 +24,25 @@ for i = 1:length(files)
     Table = readtable(current_file);
     angles = Table{:,3};
     pressures = Table{:,2};
+    for k=2:length(pressures)
+      delta_p(k)=pressures(k)-pressures(k-1);
+      if delta_p(k)>=10
+        min_pressure(i)=pressures(k-2)*10^3;
+
+      end
+    end
+    max(delta_p);
+    plot(pressures)
 
     maxAngle = max(angles);
-    minPressure = min(pressures)*10^3;
+    %min_pressure = min(pressures)*10^3;
 
-    maxAngle=.5
+    %maxAngle=.5
     theta = maxAngle;
     % theta = input("Input radians: ");
     height=(r_l-r_l*cos(theta));
     v = (mt+mb)/mb*sqrt(2*g*(r_l-r_l*cos(theta)));
-    points(i,1)=minPressure;
+    points(i,1)=min_pressure(i);
     points(i,2)=v;
 
 
@@ -46,3 +59,5 @@ for i = 1:length(files)
   % filename = 'raw_data/run3.csv';
 end
 disp("done")
+
+[7.41,9.3,]

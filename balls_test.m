@@ -1,4 +1,3 @@
-
 mt = 0.7793; % mass of tube in kg
 mb = 0.00275;
 rho = 1.2; %
@@ -20,20 +19,20 @@ for i = 1:length(files)
     pressures = Table{:,2};
     for k=2:length(pressures)
       delta_p(k)=pressures(k)-pressures(k-1)
-      if delta_p(k)>=10
-        min_pressure=pressures(k);
+      if delta_p(k)>=100
+        min_pressure(i)=pressures(k);
       end
     end
 
     maxAngle = max(angles);
-    minPressure = min(pressures)*10^3;
+    %minPressure = min(pressures)*10^3;
 
     maxAngle=.5
     theta = maxAngle;
     % theta = input("Input radians: ");
     height=(r_l-r_l*cos(theta));
     v = (mt+mb)/mb*sqrt(2*g*(r_l-r_l*cos(theta)));
-    points(i,1)=minPressure;
+    points(i,1)=minPressure(i);
     points(i,2)=v;
 
 
