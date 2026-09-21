@@ -20,7 +20,7 @@ Burst_pressure=[250000,200000,300000]; %pa
 air_density=1.2; %kg/m^3
 P_atm=100000; %pa
 starting_temp=300; %K
-dt=.000002; %sec
+dt=.000005; %sec
 
 %run simulation for various values of p_initial
 for i=1:length(P_initial)
@@ -76,10 +76,14 @@ title("Exit velocities for differing vaccum pressures")
 xlabel("Vaccum Pressure (pa)")
 ylabel("Velocity (m/s)")
 fontsize("increase")
-plot([4.26*10^3,4.18*10^3],[244.8,201.1],'x','linewidth',7)
+points=Balls;
+plot(points(:,1),points(:,2),'x','linewidth',7)
+% plot([4.26*10^3,4.18*10^3],[244.8,201.1],'x','linewidth',7)
 legend('Nominal velocity','Upper bound','Lower bound','Mesured data')
 
 hold off
+figure(3)
+plot(points,'x','linewidth',7)
 figure(2)
 params=["Ball diamater", "Ball mass", "Pipe diamater" , 'Tube length', "Burst pressure"];
 bar(params,abs(delta))
