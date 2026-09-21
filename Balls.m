@@ -10,7 +10,7 @@ r_l=0.2032;
 g=9.81;
 
 % Open CSV and read third column into array, then find its maximum
-filename = 'run3.csv';
+filename = 'raw_data/run3.csv';
 Table = readtable(filename);
 angles = Table{:,3};
 pressures = Table{:,2};
@@ -30,3 +30,4 @@ disp(minPressure)
 disp(v)
 disp(maxAngle)
 fprintf('Exit Velocity = %f [m/s]\nExit Velocity with Air Momentum = %f [m/s]\n', v, v_n)
+

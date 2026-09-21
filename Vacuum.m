@@ -6,7 +6,7 @@ clc;
 
 % initial paramaters
 % range of starting values for vaccum pressure
-P_initial=1000:200:12000;
+P_initial=1000:500:12000;
 
 %paramaters that are to be varied, first value is nominal, second is min and third is max
 Ball_dia=[.04,0.0399,0.0401]; %m
@@ -20,7 +20,7 @@ Burst_pressure=[250000,200000,300000]; %pa
 air_density=1.2; %kg/m^3
 P_atm=100000; %pa
 starting_temp=300; %K
-dt=.000005; %sec
+dt=.000002; %sec
 
 %run simulation for various values of p_initial
 for i=1:length(P_initial)
