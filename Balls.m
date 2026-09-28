@@ -10,29 +10,35 @@ r_l=0.2032;
 g=9.81;
 
 % Open CSV and read third column into array, then find its maximum
-Folder="raw_data\"
+% Folder="apps_lab_data"
 
-files=dir("raw_data\");
+files=dir("Apps_lab_data\");
 files(2)=[]
 files(1)=[]
 for i = 1:length(files)
+  % if  i== 6 |  i== 13 | i== 9 | i== 5 | i == 11
+  %   % if i==100
+  % else
+
 
   % loop through the files and open. Note that dir also lists the directories, so you have to check for them.
   if ~files(i).isdir
-    current_file = fullfile("raw_data\",files(i).name);
+    current_file = fullfile("Apps_lab_data/",files(i).name);
+
 
     Table = readtable(current_file);
     angles = Table{:,3};
     pressures = Table{:,2};
+    % figure(i)
+    % plot(pressures)
+    % plot(pressures)
     for k=2:length(pressures)
       delta_p(k)=pressures(k)-pressures(k-1);
       if delta_p(k)>=10
         min_pressure(i)=pressures(k-2)*10^3;
-
       end
     end
     max(delta_p);
-    plot(pressures)
 
     maxAngle = max(angles);
     %min_pressure = min(pressures)*10^3;
@@ -44,6 +50,7 @@ for i = 1:length(files)
     v = (mt+mb)/mb*sqrt(2*g*(r_l-r_l*cos(theta)));
     points(i,1)=min_pressure(i);
     points(i,2)=v;
+    points(i,3)=i;
 
 
     v_n = (mt+mb)*sqrt(2*g*(r_l-r_l*cos(theta)))/(mb+rho*pi/4*d^2*l);
@@ -54,10 +61,13 @@ for i = 1:length(files)
     % fprintf('Exit Velocity = %f [m/s]\nExit Velocity with Air Momentum = %f [m/s]\n', v, v_n)
 
 
-  end
+    % end
 
-  % filename = 'raw_data/run3.csv';
+    % filename = 'raw_data/run3.csv';
+  end
 end
+% if  i== 6 |  i== 13 | i== 9 | i== 5 | i == 11
+points([11,5,9,13,6],:) =[]
+writematrix(points,'processed_data.csv');
 disp("done")
 
-[7.41,9.3,]

@@ -1,6 +1,7 @@
 % apps lab vacuum cannon model 2
-clear;
-clc;
+clear
+clc
+% clf
 
 %the initial pressure  for loop is a last minute addition and a little messy
 
@@ -20,7 +21,7 @@ Burst_pressure=[250000,200000,300000]; %pa
 air_density=1.2; %kg/m^3
 P_atm=100000; %pa
 starting_temp=300; %K
-dt=.000005; %sec
+dt=.000015; %sec
 
 %run simulation for various values of p_initial
 for i=1:length(P_initial)
@@ -59,16 +60,31 @@ for i=1:length(P_initial)
   % delta(6)=V_Delta(3,6)-V_Delta(2,6);
 
   %RSS for deltas
-  delta_final(i)=sqrt(delta(1)^2 + delta(2)^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 );
+  delta_final(i)=sqrt(delta(1)^2 + delta(2 )^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 );
   v_upper(i)=v_nominal(i)+delta_final(i);
   v_lower(i)=v_nominal(i)-delta_final(i);
 
 end
 
 %plot results
-points=Balls;
+% figure(10)
 
-figure(4)
+% call function which excracts data and formats it into points
+points=readmatrix("processed_data.csv");
+first_set=points([1,2,10,8,9],:)
+second_set=points([3,4,7,5,6],:)
+first_ave=[sum(first_set(:,1))/length(first_set),sum(first_set(:,2)/length(first_set))]
+second_ave=[sum(second_set(:,1)/length(second_set)),sum(second_set(:,1)/length(second_set))]
+first_std=[std(first_set(:,1)),std(first_set(:,2))]
+second_std=[std(second_set(:,1)),std(second_set(:,2))]
+% points=readmatrix("processed_data.csv")
+% for point =1:length(points)
+%   if
+% end
+
+
+figure(1)
+clf
 hold on
 plot(P_initial,v_nominal)
 plot(P_initial,v_upper)
@@ -78,33 +94,32 @@ title("Exit velocities for differing vaccum pressures")
 xlabel("Vaccum Pressure (pa)")
 ylabel("Velocity (m/s)")
 fontsize("increase")
-plot(points(:,1),points(:,2),'x','linewidth',7)
+plot(first_ave(1),first_ave(2),'x','linewidth',7)
+% clot(points(:,1),points(:,2),'x','linewidth',7)
+plot(first_set(:,1),first_set(:,2),'x','linewidth',7)
+plot(second_set(:,1),second_set(:,2),'x','linewidth',7)
 % plot([4.26*10^3,4.18*10^3],[244.8,201.1],'x','linewidth',7)
 legend('Nominal velocity','Upper bound','Lower bound','Mesured data')
-
 hold off
 
-figure(5)
-hold on
-plot(P_initial,v_nominal)
-plot(P_initial,v_upper)
-plot(P_initial,v_lower)
 
-title("Exit velocities for differing vaccum pressures")
-xlabel("Vaccum Pressure (pa)")
-ylabel("Velocity (m/s)")
-fontsize("increase")
-plot(points(:,1),points(:,2),'x','linewidth',7)
-% plot([4.26*10^3,4.18*10^3],[244.8,201.1],'x','linewidth',7)
-legend('Nominal velocity','Upper bound','Lower bound','Mesured data')
-
-hold off
-figure(3)
-plot(points,'x','linewidth',7)
 figure(2)
-params=["Ball diamater", "Ball mass", "Pipe diamater" , 'Tube length', "Burst pressure"];
-bar(params,abs(delta))
-ylabel("Affect on exit velocity (m/s)")
+clf
+hold on
+plot(P_initial,v_nominal)
+plot(P_initial,v_upper)
+plot(P_initial,v_lower)
+
+title("Exit velocities for differing vaccum pressures")
+xlabel("Vaccum Pressure (pa)")
+ylabel("Velocity (m/s)")
+fontsize("increase")
+plot(first_ave(1),first_ave(2),'x','linewidth',7)
+% plot(first_ave(1),first_ave(2),'x','linewidth',7)
+legend('Nominal velocity','Upper bound','Lower bound','Mesured data')
+hold off
+
+% figure(5
 
 disp("end")
 
