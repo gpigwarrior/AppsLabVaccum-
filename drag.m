@@ -1,13 +1,13 @@
+function delta_v=drag(v_0)
 % angle=.301
 % m_b=.04
 % height=8-8*cos(angle)
-clear
-clc
+
 
 rho=1.22;
 A=pi*0.0399/2;
 cd=0.12;
-v_0=200;
+%v_0=200;
 distance=.5;
 v=v_0;
 mass=0.027;
@@ -31,4 +31,5 @@ plot(x,v)
 delta_v=v(2)-v(i-1);
 energy=1/2*mass*(delta_v^2);
 disp(energy)
+disp("delta_v is")
 disp(delta_v)

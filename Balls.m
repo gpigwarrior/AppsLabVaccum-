@@ -51,6 +51,7 @@ for i = 1:length(files)
     % theta = input("Input radians: ");
     height=(r_l-r_l*cos(theta));
     v = (mt+mb)/mb*sqrt(2*g*(r_l-r_l*cos(theta)));
+    v_adjust=drag(v)
     points(i,1)=min_pressure(i);
     points(i,2)=v;
 
