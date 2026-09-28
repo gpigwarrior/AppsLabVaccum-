@@ -50,7 +50,11 @@ for i = 1:length(files)
     v = (mt+mb)/mb*sqrt(2*g*(r_l-r_l*cos(theta)));
     points(i,1)=min_pressure(i);
     points(i,2)=v;
-    points(i,3)=i;
+    err_mb=-sqrt(2*9.8*height)*mt/(mb^2)
+    err_mt=sqrt(2*9.8*height)
+    err_h=1/2*(2*g*height)^(-1/2)*1+(mt/mb)
+    err=sqrt(err_h^2+err_mb^2+err_mt^2)
+    points(i,3)=err;
 
 
     v_n = (mt+mb)*sqrt(2*g*(r_l-r_l*cos(theta)))/(mb+rho*pi/4*d^2*l);

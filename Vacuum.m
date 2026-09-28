@@ -74,9 +74,9 @@ points=readmatrix("processed_data.csv");
 first_set=points([1,2,10,8,9],:)
 second_set=points([3,4,7,5,6],:)
 first_ave=[sum(first_set(:,1))/length(first_set),sum(first_set(:,2)/length(first_set))]
-second_ave=[sum(second_set(:,1)/length(second_set)),sum(second_set(:,1)/length(second_set))]
-first_std=[std(first_set(:,1)),std(first_set(:,2))]
-second_std=[std(second_set(:,1)),std(second_set(:,2))]
+second_ave=[sum(second_set(:,1)/length(second_set)),sum(second_set(:,2)/length(second_set))]
+first_err=[std(first_set(:,1))/2,std(first_set(:,2))/2]
+second_err=[std(second_set(:,1))/2,std(second_set(:,2))/2]
 % points=readmatrix("processed_data.csv")
 % for point =1:length(points)
 %   if
@@ -114,13 +114,12 @@ title("Exit velocities for differing vaccum pressures")
 xlabel("Vaccum Pressure (pa)")
 ylabel("Velocity (m/s)")
 fontsize("increase")
-plot(first_ave(1),first_ave(2),'x','linewidth',7)
+% plot(first_ave(1),first_ave(2),'x','linewidth',7)
+errorbar(first_ave(1),first_ave(2),first_err(2),first_err(2),first_err(1),first_err(1),"o")
+errorbar(second_ave(1),second_ave(2),second_err(2),second_err(2),second_err(1),second_err(1),"o")
 % plot(first_ave(1),first_ave(2),'x','linewidth',7)
 legend('Nominal velocity','Upper bound','Lower bound','Mesured data')
 hold off
-
-% figure(5
-
 disp("end")
 
 
