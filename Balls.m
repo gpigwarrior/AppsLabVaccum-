@@ -9,8 +9,8 @@ l = 1.525; %
 r_l=0.2032;
 g=9.81;
 delta_mb=0.00005
-delta_mt=0.010
-delta_h=0.0010
+delta_mt=0.00010
+delta_h=0.010
 
 % Open CSV and read third column into array, then find its maximum
 % Folder="apps_lab_data"

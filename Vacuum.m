@@ -21,7 +21,7 @@ Burst_pressure=[250000,200000,300000]; %pa
 air_density=1.2; %kg/m^3
 P_atm=100000; %pa
 starting_temp=300; %K
-dt=.000015; %sec
+dt=.000012; %sec
 
 %run simulation for various values of p_initial
 for i=1:length(P_initial)
@@ -69,10 +69,13 @@ end
 %plot results
 % figure(10)
 
-% call function which excracts data and formats it into points
+% Read data from csv file
 points=readmatrix("processed_data.csv");
+%split up the data based on which pressure it ended up using
 first_set=points([1,2,10,8,9],:)
 second_set=points([3,4,7,5,6],:)
+
+%calculate averages and errors
 first_ave=[sum(first_set(:,1))/length(first_set),sum(first_set(:,2)/length(first_set))]
 second_ave=[sum(second_set(:,1)/length(second_set)),sum(second_set(:,2)/length(second_set))]
 
@@ -83,7 +86,8 @@ second_std=[std(second_set(:,1))/2,std(second_set(:,2))/2]
 first_err=sqrt(sys_error^2+first_std.^2)
 second_err=sqrt(sys_error^2+second_std.^2)
 
-
+model_table=[P_initial;v_nominal;v_upper;v_lower]
+writematrix(model_table,"model_table.csv")
 
 figure(1)
 clf
@@ -121,7 +125,8 @@ fontsize("increase")
 errorbar(first_ave(1),first_ave(2),first_err(2),first_err(2),first_err(1),first_err(1),"o")
 errorbar(second_ave(1),second_ave(2),second_err(2),second_err(2),second_err(1),second_err(1),"o")
 % plot(first_ave(1),first_ave(2),'x','linewidth',7)
-legend('Nominal velocity','Upper bound','Lower bound','Mesured data')
+% legend('Nominal velocity','Upper bound','Lower bound','Mesured data')
+legend('Nominal velocity','Upper bound','Lower bound','Average in 4 kpa range','Average in 7 kpa range')
 hold off
 disp("end")
 
