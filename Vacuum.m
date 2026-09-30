@@ -87,8 +87,8 @@ second_std=[std(second_set(:,1))/2,std(second_set(:,2))/2]
 first_err=sqrt(sys_error^2+first_std.^2)
 second_err=sqrt(sys_error^2+second_std.^2)
 
-% model_table=[P_initial;v_nominal;v_upper;v_lower]
-% writematrix(p_initial,"model")
+model_table=[P_initial;v_nominal;v_upper;v_lower]
+writematrix(model_table,"model_table.csv")
 
 figure(1)
 clf
@@ -148,7 +148,7 @@ while Ball_pos<Tube_Length
 
   % call functions to calculate pressure
   P_dns(n)=Pdns_Calc(Ball_dia,Pipe_ID,Tube_Length,Ball_pos(n),P_initial,Burst_pressure,P_atm);
-  [P_ups(n+1),densities(n+1)]=Pups_Calc(P_atm,V(n),Ball_pos(n),Pipe_ID,starting_temp,P_ups(n),n);
+  [P_ups(n+1),densities(n+1)]=Pups_Calc(P_atm,V(n),Ball_pos(n),Pipe_ID,starting_temp,P_ups(n),n,loss_coeff);
 
   % calculate forces and acceleration
   Fups(n)=P_ups(n)*A_ball;

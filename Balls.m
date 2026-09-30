@@ -76,7 +76,6 @@ for i = 1:length(files)
     % filename = 'raw_data/run3.csv';
   end
 end
-% if  i== 6 |  i== 13 | i== 9 | i== 5 | i == 11
 points([11,5,9,13,6],:) =[]
 writematrix(points,'processed_data.csv');
 disp("done")

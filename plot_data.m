@@ -11,6 +11,8 @@ points=readmatrix("processed_data.csv");
 %split up the data based on which pressure it ended up using
 first_set=points([1,2,10,8,9],:)
 second_set=points([3,4,7,5,6],:)
+% first_set=points
+% second_set=points
 
 %calculate averages and errors
 first_ave=[sum(first_set(:,1))/length(first_set),sum(first_set(:,2)/length(first_set))]
