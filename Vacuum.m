@@ -55,10 +55,6 @@ for i=1:length(P_initial)
   delta(5)=V_Delta(3,5)-V_Delta(2,5);
 
 
-  % for k = [2,3]
-  %   V_Delta(k,6)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
-  % end
-  % delta(6)=V_Delta(3,6)-V_Delta(2,6);
 
   %RSS for deltas
   delta_final(i)=sqrt(delta(1)^2 + delta(2 )^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 );
@@ -67,8 +63,6 @@ for i=1:length(P_initial)
 
 end
 
-%plot results
-% figure(10)
 
 % Read data from csv file
 points=readmatrix("processed_data.csv");
@@ -90,6 +84,7 @@ second_err=sqrt(sys_error^2+second_std.^2)
 model_table=[P_initial;v_nominal;v_upper;v_lower]
 writematrix(model_table,"model_table.csv")
 
+% this script also plots data, it is not used often but was kept in after refactring plotting to be in a different file
 figure(1)
 clf
 hold on
@@ -184,7 +179,7 @@ end
 end
 
 
-
+%calculate upsteam pressure
 function [pups,air_density] = Pups_Calc(Patm,Velocity,length,pipe_ID,starting_temp,P_ups,i,loss_coeff)
 
 Gas_constant=287.058;
@@ -192,6 +187,7 @@ Gas_constant=287.058;
 air_density=1.22;
 friction_factor=0.02;
 loss_coeff=0.74;
+%take into account losses
 loss_bernoulli=air_density*Velocity^2/2;
 loss_viscous=friction_factor*(air_density*Velocity^2*length/2*pipe_ID);
 loss_entrence=loss_coeff*(air_density*Velocity^2/2);
