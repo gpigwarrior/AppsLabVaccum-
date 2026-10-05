@@ -1,18 +1,19 @@
 clear
 clc
+
+% read data gotton from simulation script
 model_table=readmatrix("model_table.csv")
 P_initial=model_table(1,:)
 v_nominal=model_table(2,:)
 v_upper=model_table(3,:)
 v_lower=model_table(4,:)
 
-
+% read data from other script
 points=readmatrix("processed_data.csv");
+
 %split up the data based on which pressure it ended up using
 first_set=points([1,2,10,8,9],:)
 second_set=points([3,4,7,5,6],:)
-% first_set=points
-% second_set=points
 
 %calculate averages and errors
 first_ave=[sum(first_set(:,1))/length(first_set),sum(first_set(:,2)/length(first_set))]
@@ -24,7 +25,8 @@ second_std=[std(second_set(:,1))/2,std(second_set(:,2))/2]
 
 first_err=sqrt(sys_error^2+first_std.^2)
 second_err=sqrt(sys_error^2+second_std.^2)
-% tab=["hi","hello";"h",first_std]
+
+%format into a table for the report
 output_table=[" ","4 kpa","7 kpa";
 
   "velocity mean (m/s)",num2str(first_ave(2)),num2str(second_ave(2));
@@ -36,6 +38,7 @@ output_table=[" ","4 kpa","7 kpa";
   "total error", num2str(first_std(2)+sys_error(1)),num2str(second_std(2)+sys_error(1));]
 writematrix(output_table,"crunched.csv")
 
+%plot average data points
 figure(1)
 clf
 hold on
@@ -50,7 +53,7 @@ fontsize("increase")
 % plot(first_ave(1),first_ave(2),'x','linewidth',7)
 % clot(points(:,1),points(:,2),'x','linewidth',7)
 err_press=100
-errorbar(first_set(:,1),first_set(:,2),first_set(:,3),first_set(:,3),err_press,err_press,'x',"color","red")
+errrbar(first_set(:,1),first_set(:,2),first_set(:,3),first_set(:,3),err_press,err_press,'x',"color","red")
 errorbar(second_set(:,1),second_set(:,2),second_set(:,3),second_set(:,3),err_press,err_press,'x',"color","blue")
 % plot(second_set(:,1),second_set(:,2),'x','linewidth',7)
 % plot([4.26*10^3,4.18*10^3],[244.8,201.1],'x','linewidth',7)
@@ -58,6 +61,7 @@ legend('Nominal velocity','Upper bound','Lower bound','Data in 4 kpa range','Dat
 hold off
 
 
+%plot individual data points
 figure(2)
 clf
 hold on
