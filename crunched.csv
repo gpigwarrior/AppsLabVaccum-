@@ -1,0 +1,7 @@
+ ,4 kpa,7 kpa
+velocity mean (m/s),162.7645,163.7802
+pressure mean (kpa),4.8255,7.8277
+velocity standard deviation (m/s) ,13.7412,14.2852
+pressure standard deviation (kpa),0.49322,0.34686
+velocity systematic error (m/s),20.5672,20.5672
+total error,34.3083,34.8523

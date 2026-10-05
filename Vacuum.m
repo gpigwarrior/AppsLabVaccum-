@@ -22,7 +22,7 @@ loss_coeff=0.74;
 air_density=1.2; %kg/m^3
 P_atm=100000; %pa
 starting_temp=300; %K
-dt=.000012; %sec
+dt=.000002; %sec
 
 %run simulation for various values of p_initial
 for i=1:length(P_initial)
@@ -133,6 +133,7 @@ disp("end")
 
 
 function final_V = simulation(Ball_dia, Mass, Pipe_ID, Tube_Length, Burst_pressure, P_initial, air_density, P_atm, starting_temp, Pipe_OD,dt)
+loss_coeff=1
 %starting values for arrays and variables
 P_dns=[0];
 P_ups=[P_atm];
@@ -190,7 +191,7 @@ Gas_constant=287.058;
 %air_density=P_ups/(Gas_constant*starting_temp);
 air_density=1.22;
 friction_factor=0.02;
-% loss_coeff=0.74;
+loss_coeff=0.74;
 loss_bernoulli=air_density*Velocity^2/2;
 loss_viscous=friction_factor*(air_density*Velocity^2*length/2*pipe_ID);
 loss_entrence=loss_coeff*(air_density*Velocity^2/2);
