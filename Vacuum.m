@@ -16,7 +16,7 @@ Pipe_OD=.04826; %m
 Pipe_ID=[.040386,0.039878,.04826]; %m
 Tube_Length=[1.524,1.4986,1.5494]; %m
 Burst_pressure=[250000,200000,300000]; %pa
-loss_coeff=[0.74,0.74,.99];
+loss_coeff=[0.74,0.74,1.5];
 table=[
   Ball_dia;
   Mass;
@@ -30,42 +30,48 @@ writematrix(table,"table.csv")
 air_density=1.2; %kg/m^3
 P_atm=100000; %pa
 starting_temp=300; %K
-dt=.000002; %sec
+dt=.000012; %sec
 
 %run simulation for various values of p_initial
 for i=1:length(P_initial)
 
   %calculate nominal
-  v_nominal(i)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+  v_nominal(i)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt,loss_coeff(1) );
 
   %this can be done a better way but a this is a bunch of loops that
   %will calculate the different velocities for the upper and lower
   %values of the various parameters
   for k = [2,3]
-    V_Delta(k,1)=simulation(Ball_dia(k), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+    V_Delta(k,1)=simulation(Ball_dia(k), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt ,loss_coeff(1));
   end
   delta(1)=V_Delta(3,1)-V_Delta(2,1);
   for k = [2,3]
-    V_Delta(k,2)=simulation(Ball_dia(1), Mass(k), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+    V_Delta(k,2)=simulation(Ball_dia(1), Mass(k), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt,loss_coeff(1) );
   end
   delta(2)=V_Delta(3,2)-V_Delta(2,2);
   for k = [2,3]
-    V_Delta(k,3)=simulation(Ball_dia(1), Mass(1), Pipe_ID(k), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+    V_Delta(k,3)=simulation(Ball_dia(1), Mass(1), Pipe_ID(k), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt,loss_coeff(1) );
   end
   delta(3)=V_Delta(3,3)-V_Delta(2,3);
   for k = [2,3]
-    V_Delta(k,4)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(k), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+    V_Delta(k,4)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(k), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt,loss_coeff(1) );
   end
   delta(4)=V_Delta(3,4)-V_Delta(2,4);
   for k = [2,3]
-    V_Delta(k,5)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(k), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt );
+    V_Delta(k,5)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(k), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt,loss_coeff(1) );
   end
   delta(5)=V_Delta(3,5)-V_Delta(2,5);
+
+  for k = [2,3]
+    V_Delta(k,6)=simulation(Ball_dia(1), Mass(1), Pipe_ID(1), Tube_Length(1), Burst_pressure(1), P_initial(i), air_density, P_atm, starting_temp, Pipe_OD,dt,loss_coeff(k) );
+  end
+  delta(6)=V_Delta(3,6)-V_Delta(2,6);
+  v_coeff(i)=V_Delta(3,6)
 
 
 
   %RSS for deltas
-  delta_final(i)=sqrt(delta(1)^2 + delta(2 )^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 );
+  delta_final(i)=sqrt(delta(1)^2 + delta(2 )^2 + delta(3)^2 +delta(4)^2 +delta(5)^2+delta(6)^2 );
   v_upper(i)=v_nominal(i)+delta_final(i);
   v_lower(i)=v_nominal(i)-delta_final(i);
 
@@ -89,7 +95,7 @@ second_std=[std(second_set(:,1))/2,std(second_set(:,2))/2]
 first_err=sqrt(sys_error^2+first_std.^2)
 second_err=sqrt(sys_error^2+second_std.^2)
 
-model_table=[P_initial;v_nominal;v_upper;v_lower]
+model_table=[P_initial;v_nominal;v_upper;v_lower,v_coeff]
 writematrix(model_table,"model_table.csv")
 
 % this script also plots data, it is not used often but was kept in after refactring plotting to be in a different file
@@ -135,8 +141,7 @@ hold off
 disp("end")
 
 
-function final_V = simulation(Ball_dia, Mass, Pipe_ID, Tube_Length, Burst_pressure, P_initial, air_density, P_atm, starting_temp, Pipe_OD,dt)
-loss_coeff=1
+function final_V = simulation(Ball_dia, Mass, Pipe_ID, Tube_Length, Burst_pressure, P_initial, air_density, P_atm, starting_temp, Pipe_OD,dt,loss_coeff)
 %starting values for arrays and variables
 P_dns=[0];
 P_ups=[P_atm];
@@ -194,11 +199,11 @@ Gas_constant=287.058;
 %air_density=P_ups/(Gas_constant*starting_temp);
 air_density=1.22;
 friction_factor=0.02;
-loss_coeff=0.74;
+% loss_coeff=0.74;
 %take into account losses
 loss_bernoulli=air_density*Velocity^2/2;
 loss_viscous=friction_factor*(air_density*Velocity^2*length/2*pipe_ID);
-% loss_entrence=loss_coeff*(air_density*Velocity^2/2);
+loss_entrence=loss_coeff*(air_density*Velocity^2/2);
 % loss_oraface=
 pups=Patm-loss_bernoulli-loss_viscous-loss_entrence;
 end
