@@ -16,8 +16,16 @@ Pipe_OD=.04826; %m
 Pipe_ID=[.040386,0.039878,.04826]; %m
 Tube_Length=[1.524,1.4986,1.5494]; %m
 Burst_pressure=[250000,200000,300000]; %pa
-loss_coeff=0.74;
+loss_coeff=[0.74,0.74,.99];
+table=[
+  Ball_dia;
+  Mass;
+  Pipe_ID;
+  Tube_Length;
+  Burst_pressure
+  ]
 
+writematrix(table,"table.csv")
 % other parameters
 air_density=1.2; %kg/m^3
 P_atm=100000; %pa
@@ -190,7 +198,8 @@ loss_coeff=0.74;
 %take into account losses
 loss_bernoulli=air_density*Velocity^2/2;
 loss_viscous=friction_factor*(air_density*Velocity^2*length/2*pipe_ID);
-loss_entrence=loss_coeff*(air_density*Velocity^2/2);
+% loss_entrence=loss_coeff*(air_density*Velocity^2/2);
+% loss_oraface=
 pups=Patm-loss_bernoulli-loss_viscous-loss_entrence;
 end
 

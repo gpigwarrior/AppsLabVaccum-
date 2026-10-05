@@ -8,6 +8,7 @@ v_nominal=model_table(2,:)
 v_upper=model_table(3,:)
 v_lower=model_table(4,:)
 
+err_press=500
 % read data from other script
 points=readmatrix("processed_data.csv");
 
@@ -29,16 +30,26 @@ second_err=sqrt(sys_error^2+second_std.^2)
 %format into a table for the report
 output_table=[" ","4 kpa","7 kpa";
 
-  "velocity mean (m/s)",num2str(first_ave(2)),num2str(second_ave(2));
-  "pressure mean (kpa)",num2str(first_ave(1)/1000),num2str(second_ave(1)/1000);
-  "velocity standard deviation (m/s) ", num2str(first_std(2)), num2str(second_std(2));
-  "pressure standard deviation (kpa)", num2str(first_std(1)/1000), num2str(second_std(1)/1000);
-  "velocity systematic error (m/s)", num2str(sys_error(1)), num2str(sys_error(1));
+  "Velocity mean (m/s)",num2str(first_ave(2)),num2str(second_ave(2));
+  "Velocity standard deviation (m/s) ", num2str(first_std(2)), num2str(second_std(2));
+  "Velocity systematic error (m/s)", num2str(sys_error(1)), num2str(sys_error(1));
+  "Velocity total error", num2str(first_std(2)+sys_error(1)),num2str(second_std(2)+sys_error(1));
+  "Pressure mean (kpa)",num2str(first_ave(1)/1000),num2str(second_ave(1)/1000);
+  "Pressure standard deviation (kpa)", num2str(first_std(1)/1000), num2str(second_std(1)/1000);
+  "Pressure systematic error (kpa)", num2str(err_press), num2str(err_press);
   % "pressure systematic error", num2str(sys_error(1)), num2str(sys_error(1));
-  "total error", num2str(first_std(2)+sys_error(1)),num2str(second_std(2)+sys_error(1));]
+  "Pressure total error", num2str(first_std(2)+sys_error(1)),num2str(second_std(2)+sys_error(1));
+  ]
 writematrix(output_table,"crunched.csv")
 
-%plot average data points
+% f=figure
+% f = figure;
+% uit = uitable(output_table);
+% uit.ColumnName={t.Properties.VariableNames{:}}; %renaming columns to that of table
+% uit.RowName=[]; %removing default row numbering as in your uitable
+% saveas(f, 'q60974307.png');
+
+%plot individual data points
 figure(1)
 clf
 hold on
@@ -52,16 +63,15 @@ ylabel("Velocity (m/s)")
 fontsize("increase")
 % plot(first_ave(1),first_ave(2),'x','linewidth',7)
 % clot(points(:,1),points(:,2),'x','linewidth',7)
-err_press=100
-errrbar(first_set(:,1),first_set(:,2),first_set(:,3),first_set(:,3),err_press,err_press,'x',"color","red")
+errorbar(first_set(:,1),first_set(:,2),first_set(:,3),first_set(:,3),err_press,err_press,'x',"color","red")
 errorbar(second_set(:,1),second_set(:,2),second_set(:,3),second_set(:,3),err_press,err_press,'x',"color","blue")
 % plot(second_set(:,1),second_set(:,2),'x','linewidth',7)
 % plot([4.26*10^3,4.18*10^3],[244.8,201.1],'x','linewidth',7)
-legend('Nominal velocity','Upper bound','Lower bound','Data in 4 kpa range','Data in 7 kpa range')
+legend('Nominal velocity','Upper bound','Lower bound','Data in 4 kpa range','','','','','','Data in 7 kpa range')
 hold off
 
 
-%plot individual data points
+%plot average data points
 figure(2)
 clf
 hold on
