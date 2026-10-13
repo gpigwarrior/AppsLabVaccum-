@@ -16,7 +16,7 @@ Pipe_OD=.04826; %m
 Pipe_ID=[.040386,0.039878,.04826]; %m
 Tube_Length=[1.524,1.4986,1.5494]; %m
 Burst_pressure=[250000,200000,300000]; %pa
-loss_coeff=[0.74,0.74,1.5];
+loss_coeff=[0.74,0.74,1.3];
 table=[
   Ball_dia;
   Mass;
@@ -25,7 +25,7 @@ table=[
   Burst_pressure
   ]
 
-writematrix(table,"table.csv")
+% writematrix(table,"table.csv")
 % other parameters
 air_density=1.2; %kg/m^3
 P_atm=100000; %pa
@@ -71,7 +71,7 @@ for i=1:length(P_initial)
 
 
   %RSS for deltas
-  delta_final(i)=sqrt(delta(1)^2 + delta(2 )^2 + delta(3)^2 +delta(4)^2 +delta(5)^2+delta(6)^2 );
+  delta_final(i)=sqrt(delta(1)^2 + delta(2 )^2 + delta(3)^2 +delta(4)^2 +delta(5)^2 );
   v_upper(i)=v_nominal(i)+delta_final(i);
   v_lower(i)=v_nominal(i)-delta_final(i);
 
@@ -95,7 +95,7 @@ second_std=[std(second_set(:,1))/2,std(second_set(:,2))/2]
 first_err=sqrt(sys_error^2+first_std.^2)
 second_err=sqrt(sys_error^2+second_std.^2)
 
-model_table=[P_initial;v_nominal;v_upper;v_lower,v_coeff]
+model_table=[P_initial;v_nominal;v_upper;v_lower;v_coeff]
 writematrix(model_table,"model_table.csv")
 
 % this script also plots data, it is not used often but was kept in after refactring plotting to be in a different file
@@ -105,6 +105,7 @@ hold on
 plot(P_initial,v_nominal)
 plot(P_initial,v_upper)
 plot(P_initial,v_lower)
+plot(P_initial,v_coeff)
 
 title("Exit velocities for differing vaccum pressures")
 xlabel("Vaccum Pressure (pa)")
@@ -126,6 +127,7 @@ hold on
 plot(P_initial,v_nominal)
 plot(P_initial,v_upper)
 plot(P_initial,v_lower)
+plot(P_initial,v_coeff)
 
 title("Exit velocities for differing vaccum pressures")
 xlabel("Vaccum Pressure (pa)")
@@ -206,6 +208,9 @@ loss_viscous=friction_factor*(air_density*Velocity^2*length/2*pipe_ID);
 loss_entrence=loss_coeff*(air_density*Velocity^2/2);
 % loss_oraface=
 pups=Patm-loss_bernoulli-loss_viscous-loss_entrence;
+disp(loss_entrence)
+disp("pups is "+ pups)
+disp("patm is "+  Patm)
 end
 
 
