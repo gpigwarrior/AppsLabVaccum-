@@ -56,7 +56,7 @@ for i = 1:length(files)
     err=sqrt((err_h*delta_h)^2+(err_mb*delta_mb)^2+(err_mt*delta_mt)^2)
 
     points(i,3)=err;
-    points(i,4)=maxAngle;
+    points(i,4)=maxAngle*10^3;
 
 
     v_n = (mt+mb)*sqrt(2*g*(r_l-r_l*cos(theta)))/(mb+rho*pi/4*d^2*l);
@@ -72,7 +72,10 @@ for i = 1:length(files)
     % filename = 'raw_data/run3.csv';
   end
 end
+% points=points
+points
 points([11,5,9,13,6],:) =[] %strip off bad trials
+points
 
 %write data to table for later use
 writematrix(points,'processed_data.csv');
